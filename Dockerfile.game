@@ -1,3 +1,44 @@
 FROM ubuntu:22.04
 
-RUN apt-get update && apt-get install lib32z1 g++ cmake build-essential liblua5.2-dev libgmp3-dev libmysqlclient-dev libboost-system-dev libpugixml-dev -y
+RUN apt-get update && apt-get install lib32z1 g++ cmake build-essential liblua5.2-dev libgmp3-dev libmysqlclient-dev libboost-system-dev libpugixml-dev unrar -y
+
+RUN mkdir /build
+
+COPY game /build
+WORKDIR /build
+
+ENV GAME_PATH /home/game
+
+RUN echo "Creating game directory at '$GAME_PATH'..."
+RUN mkdir -p $GAME_PATH
+
+RUN echo "Extracting 'tibia-game.tarball.tar.gz' to '$GAME_PATH'..."
+RUN tar -xvzf tibia-game.tarball.tar.gz -C $GAME_PATH
+
+RUN echo "Creating backup of files that will be edited"
+RUN cp $GAME_PATH/bin/game $GAME_PATH/bin/game-original
+RUN cp $GAME_PATH/.tibia $GAME_PATH/.tibia-original
+
+RUN echo "Moving file 'game' to '$GAME_PATH/bin'..."
+RUN cp game $GAME_PATH/bin
+
+RUN echo "Setting full read and write permissions for '$GAME_PATH/bin/game'..."
+RUN chmod 777 $GAME_PATH/bin/game
+
+RUN echo "Set game path in $GAME_PATH/.tibia..."
+RUN sed -i 's/ = "\/game\// = "\/home\/game\//g' $GAME_PATH/.tibia
+
+RUN echo "Set query manager in $GAME_PATH/.tibia..."
+RUN sed -i "s/QueryManager = {.*}/QueryManager = {(\"${LOCAL_IP}\",${PORT},\"nXE?\/>j\`\"),(\"${LOCAL_IP}\",${PORT},\"nXE?\/>j\`\"),(\"${LOCAL_IP}\",${PORT},\"nXE?\/>j\`\"),(\"${LOCAL_IP}\",${PORT},\"nXE?\/>j\`\")}/g" $GAME_PATH/.tibia
+
+RUN echo "Copying file '$GAME_PATH/.tibia' to '~'..."
+RUN cp $GAME_PATH/.tibia ~
+
+RUN echo "Deleting file '$GAME_PATH/save/game.pid'..."
+RUN rm $GAME_PATH/save/game.pid
+
+RUN echo "Extracting dennis-libraries.rar to '/lib'..."
+RUN unrar x dennis-libraries.rar
+RUN chmod 777 dennis-libraries/*
+RUN mv dennis-libraries/* /lib
+

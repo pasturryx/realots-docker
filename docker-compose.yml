@@ -9,6 +9,21 @@ services:
     # healthcheck:
     #   test: CMD-SHELL
     #     mysql -h localhost -u otserv --password=otserv -e "use otserv;"
+  game:
+    build:
+      context: .
+      dockerfile: Dockerfile.game
+    environment:
+      GAME_PATH: /home/game
+    # FIXME: use GAME_PATH instead of hardcoded path
+    command:
+      - /bin/bash
+      - -c
+      - |
+        echo "Running game server from '/home/game/bin/game'..."
+        rm /home/game/save/game.pid || echo "No PID file found"
+        chmod +x /home/game/bin/game
+        /home/game/bin/game
   query-manager:
     restart: always
     depends_on:
