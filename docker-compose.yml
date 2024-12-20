@@ -16,8 +16,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.query-manager
-    volumes:
-      - ./realots-schema-inc-players.sql:/data.sql
     command:
       - /bin/bash
       - -c
