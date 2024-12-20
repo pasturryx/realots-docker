@@ -27,9 +27,10 @@ services:
         echo $$QUERY_MANAGER_IP
 
         sed -i "s/query-manager/$$QUERY_MANAGER_IP/g" ~/.tibia
+        cat ~/.tibia
 
         echo "Running game server from '/home/game/bin/game'..."
-        rm /home/game/save/game.pid
+        rm /home/game/save/game.pid || echo "Pid does not exist"
         /home/game/bin/game
   query-manager:
     restart: always
