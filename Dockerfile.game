@@ -7,7 +7,7 @@ RUN mkdir /build
 COPY game /build
 WORKDIR /build
 
-ENV GAME_PATH /home/game
+ENV GAME_PATH=/home/game
 
 RUN echo "Creating game directory at '$GAME_PATH'..."
 RUN mkdir -p $GAME_PATH

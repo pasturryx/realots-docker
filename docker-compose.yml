@@ -10,9 +10,12 @@ services:
     #   test: CMD-SHELL
     #     mysql -h localhost -u otserv --password=otserv -e "use otserv;"
   game:
+    restart: :always
     build:
       context: .
       dockerfile: Dockerfile.game
+    expose:
+      - 7172
     environment:
       GAME_PATH: /home/game
     # FIXME: use GAME_PATH instead of hardcoded path
@@ -20,12 +23,47 @@ services:
       - /bin/bash
       - -c
       - |
+        rm ~/.tibia
+        cat <<EOF > ~/.tibia
+        # Tibia - Graphical Multi-User-Dungeon
+        # .tibia: Konfigurationsdatei (Game-Server)
+
+        # Verzeichnisse
+        BINPATH     = "/home/game/bin"
+        MAPPATH     = "/home/game/map"
+        ORIGMAPPATH = "/home/game/origmap"
+        DATAPATH    = "/home/game/dat"
+        USERPATH    = "/home/game/usr"
+        LOGPATH     = "/home/game/log"
+        SAVEPATH    = "/home/game/save"
+        MONSTERPATH = "/home/game/mon"
+        NPCPATH     = "/home/game/npc"
+
+        # SharedMemories
+        SHM = 10011
+
+        # DebugLevel
+        DebugLevel = 2
+
+        # Server-Takt
+        Beat = 50
+
+        # QueryManager
+        QueryManager = {("query-manager",17778,"nXE?/>j`"),("query-manager",17778,"nXE?/>j`"),("query-manager",17778,"nXE?/>j`"),("query-manager",17778,"nXE?/>j`")}
+
+        # Weltstatus
+        World = "Zanera"
+        State = public
+        EOF
+
         echo "Running game server from '/home/game/bin/game'..."
         rm /home/game/save/game.pid || echo "No PID file found"
         chmod +x /home/game/bin/game
         /home/game/bin/game
   query-manager:
     restart: always
+    expose:
+      - 17778
     depends_on:
       - mysql
     build:
