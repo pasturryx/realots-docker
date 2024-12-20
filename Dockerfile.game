@@ -8,6 +8,8 @@ COPY game /build
 WORKDIR /build
 
 ENV GAME_PATH=/home/game
+ENV QUERY_MANAGER_IP=query-manager
+ENV QUERY_MANAGER_PORT=17778
 
 RUN echo "Creating game directory at '$GAME_PATH'..."
 RUN mkdir -p $GAME_PATH
@@ -29,7 +31,7 @@ RUN echo "Set game path in $GAME_PATH/.tibia..."
 RUN sed -i 's/ = "\/game\// = "\/home\/game\//g' $GAME_PATH/.tibia
 
 RUN echo "Set query manager in $GAME_PATH/.tibia..."
-RUN sed -i "s/QueryManager = {.*}/QueryManager = {(\"${LOCAL_IP}\",${PORT},\"nXE?\/>j\`\"),(\"${LOCAL_IP}\",${PORT},\"nXE?\/>j\`\"),(\"${LOCAL_IP}\",${PORT},\"nXE?\/>j\`\"),(\"${LOCAL_IP}\",${PORT},\"nXE?\/>j\`\")}/g" $GAME_PATH/.tibia
+RUN sed -i "s/QueryManager = {.*}/QueryManager = {(\"${QUERY_MANAGER_IP}\",${QUERY_MANAGER_PORT},\"nXE?\/>j\`\"),(\"${QUERY_MANAGER_IP}\",${QUERY_MANAGER_PORT},\"nXE?\/>j\`\"),(\"${QUERY_MANAGER_IP}\",${QUERY_MANAGER_PORT},\"nXE?\/>j\`\"),(\"${QUERY_MANAGER_IP}\",${QUERY_MANAGER_PORT},\"nXE?\/>j\`\")}/g" $GAME_PATH/.tibia
 
 RUN echo "Copying file '$GAME_PATH/.tibia' to '~'..."
 RUN cp $GAME_PATH/.tibia ~

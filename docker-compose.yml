@@ -23,41 +23,13 @@ services:
       - /bin/bash
       - -c
       - |
-        rm ~/.tibia
-        cat <<EOF > ~/.tibia
-        # Tibia - Graphical Multi-User-Dungeon
-        # .tibia: Konfigurationsdatei (Game-Server)
+        export QUERY_MANAGER_IP=$(getent hosts query-manager | awk '{ print $1 }')
+        echo $$QUERY_MANAGER_IP
 
-        # Verzeichnisse
-        BINPATH     = "/home/game/bin"
-        MAPPATH     = "/home/game/map"
-        ORIGMAPPATH = "/home/game/origmap"
-        DATAPATH    = "/home/game/dat"
-        USERPATH    = "/home/game/usr"
-        LOGPATH     = "/home/game/log"
-        SAVEPATH    = "/home/game/save"
-        MONSTERPATH = "/home/game/mon"
-        NPCPATH     = "/home/game/npc"
+        sed -i "s/query-manager/$$QUERY_MANAGER_IP/g" ~/.tibia
 
-        # SharedMemories
-        SHM = 10011
-
-        # DebugLevel
-        DebugLevel = 2
-
-        # Server-Takt
-        Beat = 50
-
-        # QueryManager
-        QueryManager = {("query-manager",17778,"nXE?/>j`"),("query-manager",17778,"nXE?/>j`"),("query-manager",17778,"nXE?/>j`"),("query-manager",17778,"nXE?/>j`")}
-
-        # Weltstatus
-        World = "Zanera"
-        State = public
-        EOF
         echo "Running game server from '/home/game/bin/game'..."
-        rm /home/game/save/game.pid || echo "No PID file found"
-        chmod +x /home/game/bin/game
+        rm /home/game/save/game.pid
         /home/game/bin/game
   query-manager:
     restart: always
