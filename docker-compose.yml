@@ -10,7 +10,7 @@ services:
     #   test: CMD-SHELL
     #     mysql -h localhost -u otserv --password=otserv -e "use otserv;"
   game:
-    restart: :always
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile.game
@@ -55,7 +55,6 @@ services:
         World = "Zanera"
         State = public
         EOF
-
         echo "Running game server from '/home/game/bin/game'..."
         rm /home/game/save/game.pid || echo "No PID file found"
         chmod +x /home/game/bin/game
