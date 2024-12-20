@@ -1,0 +1,49 @@
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: gamel
+      MYSQL_DATABASE: otserv
+      MYSQL_USER: otserv
+      MYSQL_PASSWORD: otserv
+    # healthcheck:
+    #   test: CMD-SHELL
+    #     mysql -h localhost -u otserv --password=otserv -e "use otserv;"
+  query-manager:
+    restart: always
+    depends_on:
+      - mysql
+    build:
+      context: .
+      dockerfile: Dockerfile.query-manager
+    volumes:
+      - ./realots-schema-inc-players.sql:/data.sql
+    command:
+      - /bin/bash
+      - -c
+      - |
+        set -e
+        # mysql -h mysql -u otserv --password=otserv -D otserv -e 'source /data.sql'
+
+        cat <<EOF > config.lua
+        -- SQL Settings
+        mysqlHost = "mysql"
+        mysqlUser = "otserv"
+        mysqlPass = "otserv"
+        mysqlDatabase = "otserv"
+
+        -- Connection Settings
+        ip = "0.0.0.0" -- use 0.0.0.0 to bind all interfaces
+        port = 17778
+
+        -- Game Server Settings
+        gameIp = "0.0.0.0" -- use 0.0.0.0 to bind all interfaces
+        gamePort = 7172
+        serverSaveHour = 5
+        worldType = 0 -- normal pvp = 0, non-pvp = 1, pvp enforced = 2
+        maxPlayers = 1500
+        maxPlayersNewbies = 500
+        premBuffer = 900
+        reservedPremiumNewbies = 250
+        EOF
+        ./bin/realotsquerymanager
