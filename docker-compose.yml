@@ -50,9 +50,11 @@ services:
         sed -i "s/query-manager/$$QUERY_MANAGER_IP/g" ~/.tibia
         cat ~/.tibia
 
+        cd /home/game
         echo "Running game server from '/home/game/bin/game'..."
-        rm /home/game/save/game.pid || echo "Pid does not exist"
-        /home/game/bin/game
+        rm save/game.pid || echo "Pid does not exist"
+        ./bin/game
+        echo "kuzwa mac XDD"
   query-manager:
     restart: always
     expose:
