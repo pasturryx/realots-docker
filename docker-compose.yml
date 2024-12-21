@@ -9,6 +9,19 @@ services:
     # healthcheck:
     #   test: CMD-SHELL
     #     mysql -h localhost -u otserv --password=otserv -e "use otserv;"
+  login:
+    build:
+      context: gamel
+      dockerfile: Dockerfile
+    expose:
+      - 7171
+    command:
+      - /bin/bash
+      - -c
+      - |
+        export GAMESERVER_IP=$(getent hosts game | awk '{ print $1 }')
+        ./gamel
+
   game:
     restart: always
     build:

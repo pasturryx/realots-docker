@@ -1,0 +1,3 @@
+[submodule "gamel"]
+	path = gamel
+	url = git@github.com:michaldarda/gamel.git
