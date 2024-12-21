@@ -17,7 +17,7 @@ services:
     expose:
       - 7171
     ports:
-      - 7171:7171
+      - 127.0.0.1:7171:7171
     command:
       - /bin/sh
       - -c
@@ -39,6 +39,8 @@ services:
       - /bin/bash
       - -c
       - |
+        sleep 10
+
         export QUERY_MANAGER_IP=$(getent hosts query-manager | awk '{ print $1 }')
         echo $$QUERY_MANAGER_IP
 
