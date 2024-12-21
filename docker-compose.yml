@@ -22,7 +22,8 @@ services:
       - /bin/sh
       - -c
       - |
-        export GAMESERVER_IP=$(getent hosts game | awk '{ print $1 }')
+        cat accounts.db
+        export GAMESERVER_IP=127.0.0.1
         ./gamel
 
   game:
@@ -32,6 +33,8 @@ services:
       dockerfile: Dockerfile.game
     expose:
       - 7172
+    ports:
+      - 7172:7172
     environment:
       GAME_PATH: /home/game
     # FIXME: use GAME_PATH instead of hardcoded path
