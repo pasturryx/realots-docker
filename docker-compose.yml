@@ -12,8 +12,8 @@ services:
       - /bin/sh
       - -c
       - |
-        cat accounts.db
         export GAMESERVER_IP=127.0.0.1
+        export QUERY_MANAGER_IP=$(getent hosts query-manager | awk '{ print $1 }')
         ./gamel
 
   game:
