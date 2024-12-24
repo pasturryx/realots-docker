@@ -47,6 +47,7 @@ services:
         export QUERY_MANAGER_IP=$(getent hosts query-manager | awk '{ print $1 }')
         echo $$QUERY_MANAGER_IP
 
+        cp /home/game/.tibia ~/.tibia
         sed -i "s/query-manager/$$QUERY_MANAGER_IP/g" ~/.tibia
         cat ~/.tibia
 
