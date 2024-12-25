@@ -27,6 +27,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.game
+    depends_on:
+      - query-manager
     expose:
       - 7172
     ports:
