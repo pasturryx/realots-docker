@@ -19,7 +19,6 @@ services:
       - /bin/sh
       - -c
       - |
-        cat accounts.db
         export GAMESERVER_IP=127.0.0.1
         ./gamel
 
