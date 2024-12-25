@@ -11,6 +11,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.login-server
+    depends_on:
+      - mysql
     environment:
       MYSQL_HOST: mysql
       MYSQL_USER: otserv

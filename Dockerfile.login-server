@@ -10,23 +10,26 @@ RUN unzip realotsloginserver-master.zip -d .
 
 WORKDIR realotsloginserver-master
 
+RUN sed -i "s/Connection::read_timeout/static_cast<long>(Connection::read_timeout)/g" src/connection.cpp
+RUN sed -i "s/Connection::write_timeout/static_cast<long>(Connection::write_timeout)/g" src/connection.cpp
+RUN sed -i "s/my_bool/bool/g" src/database.cpp
+RUN mkdir -p build
+RUN cmake -S . -B build
+RUN make -C build
+RUN cp build/tfls .
+
+RUN sed -i "s/^clientVersionMin = .*/clientVersionMin = 770/g" config.lua
+RUN sed -i "s/^clientVersionMax = .*/clientVersionMax = 770/g" config.lua
+RUN sed -i "s/^clientVersionStr = .*/clientVersionStr = \"7.70\"/g" config.lua
+
 COPY --chmod=755 <<EOT /realotsloginserver-master/entrypoint.sh
-sed -i "s/Connection::read_timeout/static_cast<long>(Connection::read_timeout)/g" src/connection.cpp
-sed -i "s/Connection::write_timeout/static_cast<long>(Connection::write_timeout)/g" src/connection.cpp
-sed -i "s/my_bool/bool/g" src/database.cpp
-mkdir -p build
-cmake -S . -B build
-make -C build
-cp build/tfls .
 # sed -i "s/^ip = .*/ip = \"\$LOCAL_IP\"/g" config.lua
-sed -i "s/^clientVersionMin = .*/clientVersionMin = 770/g" config.lua
-sed -i "s/^clientVersionMax = .*/clientVersionMax = 770/g" config.lua
-sed -i "s/^clientVersionStr = .*/clientVersionStr = \"7.70\"/g" config.lua
-sed -i "s/^mysqlHost = .*/mysqlHost = \"\$MYSQL_HOST\"/g" config.lua
-sed -i "s/^mysqlUser = .*/mysqlUser = \"\$MYSQL_USER\"/g" config.lua
-sed -i "s/^mysqlPass = .*/mysqlPass = \"\$MYSQL_PASSWORD\"/g" config.lua
+sed -i "s/^mysqlHost = .*/mysqlHost = \\"\$MYSQL_HOST\\"/g" config.lua
+sed -i "s/^mysqlUser = .*/mysqlUser = \\"\$MYSQL_USER\\"/g" config.lua
+sed -i "s/^mysqlPass = .*/mysqlPass = \\"\$MYSQL_PASSWORD\\"/g" config.lua
 sed -i "s/^mysqlDatabase = .*/mysqlDatabase = \"\$MYSQL_DATABASE\"/g" config.lua
 # sed -i "s/ip=\"127.0.0.1\"/ip=\"$LOCAL_IP\"/g" realotsloginserver-master/gameservers.xml
+./tfls
 EOT
 
 CMD ["./entrypoint.sh"]
