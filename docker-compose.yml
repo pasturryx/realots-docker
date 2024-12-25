@@ -6,9 +6,6 @@ services:
       MYSQL_DATABASE: otserv
       MYSQL_USER: otserv
       MYSQL_PASSWORD: otserv
-    # healthcheck:
-    #   test: CMD-SHELL
-    #     mysql -h localhost -u otserv --password=otserv -e "use otserv;"
   login:
     restart: always
     build:
@@ -35,27 +32,6 @@ services:
       - 7172
     ports:
       - 7172:7172
-    environment:
-      GAME_PATH: /home/game
-    # FIXME: use GAME_PATH instead of hardcoded path
-    command:
-      - /bin/bash
-      - -c
-      - |
-        sleep 10
-
-        export QUERY_MANAGER_IP=$(getent hosts query-manager | awk '{ print $1 }')
-        echo $$QUERY_MANAGER_IP
-
-        cp /home/game/.tibia ~/.tibia
-        sed -i "s/query-manager/$$QUERY_MANAGER_IP/g" ~/.tibia
-        cat ~/.tibia
-
-        cd /home/game
-        echo "Running game server from '/home/game/bin/game'..."
-        rm save/game.pid || echo "Pid does not exist"
-        ./bin/game
-        echo "kuzwa mac XDD"
   query-manager:
     restart: always
     expose:
@@ -70,7 +46,6 @@ services:
       - -c
       - |
         set -e
-        # mysql -h mysql -u otserv --password=otserv -D otserv -e 'source /data.sql'
 
         cat <<EOF > config.lua
         -- SQL Settings
