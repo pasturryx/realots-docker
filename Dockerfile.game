@@ -40,11 +40,16 @@ RUN rm $GAME_PATH/save/game.pid
 RUN chmod 777 dennis-libraries/*
 RUN mv dennis-libraries/* /lib
 
-CMD export QUERY_MANAGER_IP=$(getent hosts query-manager | awk '{ print $1 }') && \
-    echo $QUERY_MANAGER_IP && \
-    cp /home/game/.tibia-original ~/.tibia && \
-    sed -i "s/query-manager/$QUERY_MANAGER_IP/g" ~/.tibia && \
-    cd $GAME_PATH && \
-    echo "Running game server from '$GAME_PATH/bin/game'..." && \
-    rm save/game.pid || echo "Pid does not exist" && \
-    ./bin/game
+COPY --chmod=755 <<EOT /entrypoint.sh
+#!/usr/bin/env sh
+export QUERY_MANAGER_IP=$(getent hosts query-manager | awk '{ print $1 }')
+echo $QUERY_MANAGER_IP
+cp /home/game/.tibia-original ~/.tibia
+sed -i "s/query-manager/$QUERY_MANAGER_IP/g" ~/.tibia
+cd $GAME_PATH
+echo "Running game server from '$GAME_PATH/bin/game'..."
+cat ~/.tibia
+rm save/game.pid || echo "Pid does not exist"
+./bin/game
+EOT
+ENTRYPOINT ["/entrypoint.sh"]
