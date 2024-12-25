@@ -23,11 +23,13 @@ RUN sed -i "s/^clientVersionMax = .*/clientVersionMax = 770/g" config.lua
 RUN sed -i "s/^clientVersionStr = .*/clientVersionStr = \"7.70\"/g" config.lua
 
 COPY --chmod=755 <<EOT /realotsloginserver-master/entrypoint.sh
+#!/usr/bin/env bash
+
 # sed -i "s/^ip = .*/ip = \"\$LOCAL_IP\"/g" config.lua
 sed -i "s/^mysqlHost = .*/mysqlHost = \\"\$MYSQL_HOST\\"/g" config.lua
 sed -i "s/^mysqlUser = .*/mysqlUser = \\"\$MYSQL_USER\\"/g" config.lua
 sed -i "s/^mysqlPass = .*/mysqlPass = \\"\$MYSQL_PASSWORD\\"/g" config.lua
-sed -i "s/^mysqlDatabase = .*/mysqlDatabase = \"\$MYSQL_DATABASE\"/g" config.lua
+sed -i "s/^mysqlDatabase = .*/mysqlDatabase = \\"\$MYSQL_DATABASE\\"/g" config.lua
 # sed -i "s/ip=\"127.0.0.1\"/ip=\"$LOCAL_IP\"/g" realotsloginserver-master/gameservers.xml
 ./tfls
 EOT
