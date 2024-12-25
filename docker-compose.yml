@@ -37,36 +37,13 @@ services:
     restart: always
     expose:
       - 17778
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: otserv
+      MYSQL_PASSWORD: otserv
+      MYSQL_DATABASE: otserv
     depends_on:
       - mysql
     build:
       context: .
       dockerfile: Dockerfile.query-manager
-    command:
-      - /bin/bash
-      - -c
-      - |
-        set -e
-
-        cat <<EOF > config.lua
-        -- SQL Settings
-        mysqlHost = "mysql"
-        mysqlUser = "otserv"
-        mysqlPass = "otserv"
-        mysqlDatabase = "otserv"
-
-        -- Connection Settings
-        ip = "0.0.0.0" -- use 0.0.0.0 to bind all interfaces
-        port = 17778
-
-        -- Game Server Settings
-        gameIp = "0.0.0.0" -- use 0.0.0.0 to bind all interfaces
-        gamePort = 7172
-        serverSaveHour = 5
-        worldType = 0 -- normal pvp = 0, non-pvp = 1, pvp enforced = 2
-        maxPlayers = 1500
-        maxPlayersNewbies = 500
-        premBuffer = 900
-        reservedPremiumNewbies = 250
-        EOF
-        ./bin/realotsquerymanager

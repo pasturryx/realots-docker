@@ -18,19 +18,43 @@ RUN wget https://github.com/frcento/realotsquerymanager/archive/refs/heads/maste
 # Unzip the RealOTS query manager
 RUN unzip realots-query-manager-master.zip -d .
 
-# RUN ln -sn /usr/include/lua-5.2 /usr/include/lua
-
 WORKDIR realotsquerymanager-master
 
 # Configure the RealOTS query manager
 # RUN sed -i "s/-llua/-I/usr/include/lua-5.2 -llua/g" Makefile && \
 RUN sed -i 's/lua_strlen/lua_rawlen/g' configmanager.cpp && \
     sed -i 's/-llua/-I\/usr\/include\/lua5.2\/ -llua5.2/g' Makefile && \
-    sed -i "s/Cz7u89dmyPzHDNEL/$MYSQL_PASSWORD/g" main.cpp && \
-    sed -i "s/Cz7u89dmyPzHDNEL/$MYSQL_PASSWORD/g" main.cpp && \
     sed -i "s/^std::string q_world.*/std::string q_world = \"RealOTS\";/g" main.cpp
 
 # Build the RealOTS query manager
 RUN make -C .
 
-CMD ["./realots-query-manager-master"]
+COPY --chmod=755 <<EOT /realotsquerymanager-master/entrypoint.sh
+#!/usr/bin/env bash
+set -e
+
+cat <<EOF > config.lua
+-- SQL Settings
+mysqlHost = "\$MYSQL_HOST"
+mysqlUser = "\$MYSQL_USER"
+mysqlPass = "\$MYSQL_PASSWORD"
+mysqlDatabase = "\$MYSQL_DATABASE"
+
+-- Connection Settings
+ip = "0.0.0.0" -- use 0.0.0.0 to bind all interfaces
+port = 17778
+
+-- Game Server Settings
+gameIp = "0.0.0.0" -- use 0.0.0.0 to bind all interfaces
+gamePort = 7172
+serverSaveHour = 5
+worldType = 0 -- normal pvp = 0, non-pvp = 1, pvp enforced = 2
+maxPlayers = 1500
+maxPlayersNewbies = 500
+premBuffer = 900
+reservedPremiumNewbies = 250
+EOF
+./bin/realotsquerymanager
+EOT
+
+CMD ["./entrypoint.sh"]
