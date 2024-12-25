@@ -9,19 +9,17 @@ services:
   login:
     restart: always
     build:
-      context: gamel
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.login-server
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: otserv
+      MYSQL_PASSWORD: otserv
+      MYSQL_DATABASE: otserv
     expose:
       - 7171
     ports:
       - 7171:7171
-    command:
-      - /bin/sh
-      - -c
-      - |
-        export GAMESERVER_IP=127.0.0.1
-        ./gamel
-
   game:
     restart: always
     build:
