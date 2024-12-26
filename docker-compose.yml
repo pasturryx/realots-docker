@@ -1,6 +1,8 @@
 services:
   mysql:
     image: mysql:latest
+    ports:
+      - 3306:33060
     environment:
       MYSQL_ROOT_PASSWORD: gamel
       MYSQL_DATABASE: otserv
