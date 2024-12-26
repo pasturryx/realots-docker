@@ -1,0 +1,20 @@
+import csv
+
+def generate_sql_from_csv(csv_filename, sql_filename):
+    try:
+        with open(csv_filename, mode='r', newline='') as csv_file:
+            csv_reader = csv.DictReader(csv_file)
+            with open(sql_filename, mode='w') as sql_file:
+                for row in csv_reader:
+                    name = row['Name']
+                    level = row['Level']
+                    sql_query = f'UPDATE players SET level = {level} WHERE charname = "{name}";\n'
+                    sql_file.write(sql_query)
+        print(f"SQL file '{sql_filename}' has been generated successfully.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+# Example usage
+csv_filename = 'levels.csv'
+sql_filename = 'update_players.sql'
+generate_sql_from_csv(csv_filename, sql_filename)
