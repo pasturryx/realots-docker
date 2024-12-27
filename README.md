@@ -133,6 +133,7 @@ When the db is cleaned up you can log to certain characters with login/passwd co
 - [ ] Add an option to run with clean db (just schema).
 - [ ] Add more scripts (create players, change exp rate etc).
 - [ ] Lock certain commits when downloading login server and query manager in respective docker files.
+- [ ] Push at least login server and query manager images into the Docker Hub.
 
 ## Useful links
 
