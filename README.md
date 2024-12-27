@@ -102,18 +102,7 @@ Run your patched Tibia client and log using login/passwd:
 Optionally you can clean up the db by invoking following queries on it.
 
 ```sh
-export MYSQL_USER=otserv
-export MYSQL_PASSWORD=otserv
-export MYSQL_DATABASE=otserv
-
-# This will set proper player levels in the db
-cat sqls/update_players.sql | docker-compose exec -T mysql sh -c 'mysql -u$MYSQL_USER -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE"'
-# This will remove players with levels 1, (3..27) (We want to keep GameMasters with level 2)
-cat sqls/remove_noobs.sql | docker-compose exec -T mysql sh -c 'mysql -u$MYSQL_USER -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE"'
-# This will create new accounts for given levels
-cat sqls/insert_users.sql | docker-compose exec -T mysql sh -c 'mysql -u$MYSQL_USER -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE"'
-# This will attach players to accounts
-cat sqls/update_player_users.sql | docker-compose exec -T mysql sh -c 'mysql -u$MYSQL_USER -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE"'
+./cleanup_db.sh
 ```
 
 When the db is cleaned up you can log to certain characters with login/passwd combination like this:
