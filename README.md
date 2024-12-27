@@ -37,7 +37,6 @@ realots-docker on master ➜ tree .
 ├── Dockerfile.login-server
 ├── Dockerfile.query-manager
 ├── README.md
-├── Tibia.exe.local
 ├── docker-compose.yml
 ├── game
 │   ├── dennis-libraries
@@ -65,7 +64,7 @@ realots-docker on master ➜ tree .
     ├── update_player_users.sql
     └── update_players.sql
 
-4 directories, 27 files
+4 directories, 26 files
 ```
 
 Once that is done you can proceed with building the images.
