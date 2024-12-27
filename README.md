@@ -119,6 +119,19 @@ When the db is cleaned up you can log to certain characters with login/passwd co
 
 11181/11181 and you'll see characters with level 81, 11195/11195 and you'll see characters with level 95 etc etc.
 
+## Scripts
+
+`scripts/` directory contains helpful scripts.
+
+- `ip_changer` uses python and modifies ip that Tibia executable connects to.
+- `update_levels.py` was used to read levels.csv and create `update_players.sql` file.
+
+## TODO
+
+- [] Move mysql env variables to env file that could be read by compose/scripts.
+- [] Add an option to run with clean db.
+- [] Add more scripts.
+
 ## Credits
 
 I'd like to give credits to [Crevasse](https://otland.net/threads/tutorial-for-running-7-7-cipsoft-server-on-ubuntu.274678/) and [SilverFern](https://otland.net/threads/script-and-tutorial-to-automate-install-of-leaked-7-70-server.284492/) and all the people from OtLand who released this to the public, patched the binary and created required libs.
