@@ -57,7 +57,7 @@ realots-docker on master ➜ tree .
 ├── run.sh
 ├── scripts
 │   ├── ip_changer
-│   └── update_levels.py
+│   └── update_levels
 └── sqls
     ├── insert_users.sql
     ├── realots-schema-inc-players.sql
@@ -130,9 +130,10 @@ When the db is cleaned up you can log to certain characters with login/passwd co
 
 ## TODO
 
-- [] Move mysql env variables to env file that could be read by compose/scripts.
-- [] Add an option to run with clean db.
-- [] Add more scripts.
+- [ ] Move mysql env variables to env file that could be read by compose/scripts.
+- [ ] Add an option to run with clean db.
+- [ ] Add more scripts.
+- [ ] Lock certain commits when downloading login server and query manager in respective docker files.
 
 ## Useful links
 
@@ -143,3 +144,4 @@ When the db is cleaned up you can log to certain characters with login/passwd co
 ## Credits
 
 I'd like to give credits to [Crevasse](https://otland.net/threads/tutorial-for-running-7-7-cipsoft-server-on-ubuntu.274678/) and [SilverFern](https://otland.net/threads/script-and-tutorial-to-automate-install-of-leaked-7-70-server.284492/) and all the people from OtLand who released this to the public, patched the binary and created required libs.
+People from RealOTS who created login server (edited TFS) and query manager for this.
