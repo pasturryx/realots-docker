@@ -10,6 +10,7 @@ This guide is for advanced users who are at least familiar what Docker is and ho
 
 - Docker
 - Docker Compose
+- Python 3 for running the scripts
 
 You need to obtain RealOTS server files from OtLand.
 When you got the files, you need to place them in the `game` directory.
