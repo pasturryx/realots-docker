@@ -31,12 +31,13 @@ You need to have following structure:
 realots-schema-inc-players.sql
 
 ```sh
-realots-dockerized on master > tree .
+realots-docker on master ➜ tree .
 .
 ├── Dockerfile.game
 ├── Dockerfile.login-server
 ├── Dockerfile.query-manager
 ├── README.md
+├── Tibia.exe.local
 ├── docker-compose.yml
 ├── game
 │   ├── dennis-libraries
@@ -53,17 +54,18 @@ realots-dockerized on master > tree .
 │   └── tibia-game.tarball.tar.gz
 ├── levels.csv
 ├── load_db.sh
-├── realots-schema-inc-players.sql
 ├── run.sh
 ├── scripts
 │   ├── ip_changer
 │   └── update_levels.py
 └── sqls
     ├── insert_users.sql
+    ├── realots-schema-inc-players.sql
+    ├── remove_noobs.sql
     ├── update_player_users.sql
     └── update_players.sql
 
-4 directories, 26 files
+4 directories, 27 files
 ```
 
 Once that is done you can proceed with building the images.
