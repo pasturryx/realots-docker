@@ -28,7 +28,7 @@ You need to have following structure:
 
 **It is important to unpack the dennis-libraries.rar file.**
 
-realots-schema-inc-players.sql
+`realots-schema-inc-players.sql` must be put inside `sqls/` directory.
 
 ```sh
 realots-docker on master ➜ tree .
@@ -131,8 +131,8 @@ When the db is cleaned up you can log to certain characters with login/passwd co
 ## TODO
 
 - [ ] Move mysql env variables to env file that could be read by compose/scripts.
-- [ ] Add an option to run with clean db.
-- [ ] Add more scripts.
+- [ ] Add an option to run with clean db (just schema).
+- [ ] Add more scripts (create players, change exp rate etc).
 - [ ] Lock certain commits when downloading login server and query manager in respective docker files.
 
 ## Useful links
