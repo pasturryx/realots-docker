@@ -2,16 +2,6 @@ FROM ubuntu:22.04
 
 RUN apt-get update && apt-get install g++ cmake build-essential liblua5.2-dev libgmp3-dev libmysqlclient-dev libboost-system-dev libpugixml-dev lib32z1 wget unzip mysql-client -y
 
-# RUN apk update && apk add --no-cache \
-#     unzip \
-#     build-base \
-#     wget \
-#     mysql-dev \
-#     lua5.2-dev
-
-# Set environment variables
-ENV MYSQL_PASSWORD gamel
-
 # Copy the RealOTS query manager zip file into the container
 RUN wget https://github.com/frcento/realotsquerymanager/archive/refs/heads/master.zip -O realots-query-manager-master.zip
 
