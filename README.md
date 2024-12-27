@@ -132,6 +132,12 @@ When the db is cleaned up you can log to certain characters with login/passwd co
 - [] Add an option to run with clean db.
 - [] Add more scripts.
 
+## Useful links
+
+- [OTLand thread with RealOTS files](https://otland.net/threads/7-7-realots-7-7-cipsoft-files-virgin.244562/)
+- [OTLand How to run a fresh 7.7 Cipsoft Server](https://otland.net/threads/tutorial-how-to-run-a-fresh-7-7-cipsoft-server.284993/)
+- [OTLand Script and tutorial to automate install of "Leaked" 7.70 server](https://otland.net/threads/script-and-tutorial-to-automate-install-of-leaked-7-70-server.284492/)
+
 ## Credits
 
 I'd like to give credits to [Crevasse](https://otland.net/threads/tutorial-for-running-7-7-cipsoft-server-on-ubuntu.274678/) and [SilverFern](https://otland.net/threads/script-and-tutorial-to-automate-install-of-leaked-7-70-server.284492/) and all the people from OtLand who released this to the public, patched the binary and created required libs.
