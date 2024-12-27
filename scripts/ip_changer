@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+
+# Read the binary file
+import os
+import sys
+
+print(sys.argv)
+
+if len(sys.argv) != 3:
+    print("Usage: ./ip_changer <path_to_executable> <new_ip>")
+    sys.exit(1)
+
+server_list = [
+    "tibia1.cipsoft.com",
+    "tibia2.cipsoft.com",
+    "server.tibia.com",
+    "server2.tibia.com"
+]
+
+path_to_executable = sys.argv[1]
+new_ip = sys.argv[2]
+
+if not os.path.exists(path_to_executable):
+    print("Tibia.exe not found")
+    sys.exit(1)
+
+for old_string in server_list:
+    with open(path_to_executable, 'rb') as file:
+        binary_data = file.read()
+
+    # Calculate the padding length
+    padding_length = len(old_string) - len(new_ip)
+    padding = b"\x00" * padding_length
+
+    # Perform the replacement
+    binary_data = binary_data.replace(old_string.encode(), new_ip.encode() + padding)
+
+    # Write the modified binary data back to the file
+    with open(path_to_executable, 'wb') as file:
+        file.write(binary_data)
