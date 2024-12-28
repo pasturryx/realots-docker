@@ -2,8 +2,15 @@ services:
   login:
     restart: always
     build:
-      context: gamel
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.login-server
+    depends_on:
+      - mysql
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: otserv
+      MYSQL_PASSWORD: otserv
+      MYSQL_DATABASE: otserv
     expose:
       - 7171
     ports:
@@ -21,6 +28,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.game
+    depends_on:
+      - query-manager
     expose:
       - 7172
     ports:

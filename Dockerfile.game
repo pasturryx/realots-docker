@@ -1,6 +1,6 @@
-FROM ubuntu:22.04
+FROM alpine:3.18
 
-RUN apt-get update && apt-get install lib32z1 g++ cmake build-essential liblua5.2-dev libgmp3-dev libmysqlclient-dev libboost-system-dev libpugixml-dev unrar -y
+RUN apk add --no-cache bash vim
 
 RUN mkdir /build
 
@@ -39,8 +39,20 @@ RUN cp $GAME_PATH/.tibia ~
 RUN echo "Deleting file '$GAME_PATH/save/game.pid'..."
 RUN rm $GAME_PATH/save/game.pid
 
-RUN echo "Extracting dennis-libraries.rar to '/lib'..."
-RUN unrar x dennis-libraries.rar
 RUN chmod 777 dennis-libraries/*
 RUN mv dennis-libraries/* /lib
 
+COPY --chmod=755 <<EOT /entrypoint.sh
+#!/usr/bin/env bash
+export QUERY_MANAGER_IP=$(getent hosts query-manager | awk '{ print \$1 }')
+echo "ajpicz to:"
+echo \$QUERY_MANAGER_IP
+cp /home/game/.tibia ~/.tibia
+sed -i "s/query-manager/\$QUERY_MANAGER_IP/g" ~/.tibia
+cd $GAME_PATH
+echo "Running game server from '\$GAME_PATH/bin/game'..."
+# cat ~/.tibia
+rm save/game.pid || echo "Pid does not exist"
+./bin/game
+EOT
+CMD ["/entrypoint.sh"]

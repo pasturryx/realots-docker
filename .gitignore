@@ -1,2 +1,3 @@
 game/*
 !game/.keep
+sqls/realots-schema-inc-players.sql
