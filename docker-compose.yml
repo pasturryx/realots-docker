@@ -2,15 +2,10 @@ services:
   login:
     restart: always
     build:
-      context: .
-      dockerfile: Dockerfile.login-server
+      context: gamel
+      dockerfile: Dockerfile
     depends_on:
-      - mysql
-    environment:
-      MYSQL_HOST: mysql
-      MYSQL_USER: otserv
-      MYSQL_PASSWORD: otserv
-      MYSQL_DATABASE: otserv
+      - query-manager
     expose:
       - 7171
     ports:
@@ -36,26 +31,6 @@ services:
       - 7172:7172
     environment:
       GAME_PATH: /home/game
-    # FIXME: use GAME_PATH instead of hardcoded path
-    command:
-      - /bin/bash
-      - -c
-      - |
-        sleep 10
-        echo "Co tam sie odjaniepawla"
-
-        export QUERY_MANAGER_IP=$(getent hosts query-manager | awk '{ print $1 }')
-        echo $$QUERY_MANAGER_IP
-
-        cp /home/game/.tibia ~/.tibia
-        sed -i "s/query-manager/$$QUERY_MANAGER_IP/g" ~/.tibia
-        cat ~/.tibia
-
-        cd /home/game
-        echo "Running game server from '/home/game/bin/game'..."
-        rm save/game.pid || echo "Pid does not exist"
-        ./bin/game
-        echo "kuzwa mac XDD"
   query-manager:
     build:
       context: oracle
