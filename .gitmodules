@@ -1,0 +1,6 @@
+[submodule "oracle"]
+	path = oracle
+	url = git@github.com:michaldarda/oracle.git
+[submodule "gamel"]
+	path = gamel
+	url = git@github.com:michaldarda/gamel.git
