@@ -129,6 +129,7 @@ When the db is cleaned up you can log to certain characters with login/passwd co
 - [OTLand thread with RealOTS files](https://otland.net/threads/7-7-realots-7-7-cipsoft-files-virgin.244562/)
 - [OTLand How to run a fresh 7.7 Cipsoft Server](https://otland.net/threads/tutorial-how-to-run-a-fresh-7-7-cipsoft-server.284993/)
 - [OTLand Script and tutorial to automate install of "Leaked" 7.70 server](https://otland.net/threads/script-and-tutorial-to-automate-install-of-leaked-7-70-server.284492/)
+- [github.com/nekiro/dockerized-realots](https://github.com/nekiro/dockerized-realots) - found similar thing after I've done this one so this is imlemented from scratch, not inspired by Nekiro's work. Also that one contains things like setting up phpmyadmin - I'm comfortable with talking to mysql via command line so didn't add this.
 
 ## Credits
 
