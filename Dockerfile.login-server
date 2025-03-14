@@ -24,13 +24,24 @@ RUN sed -i "s/^clientVersionStr = .*/clientVersionStr = \"7.70\"/g" config.lua
 
 COPY --chmod=755 <<EOT /realotsloginserver-master/entrypoint.sh
 #!/usr/bin/env bash
+set -e
 
-# sed -i "s/^ip = .*/ip = \"\$LOCAL_IP\"/g" config.lua
+# Wait for MySQL to be available
+echo "Waiting for MySQL at \$MYSQL_HOST..."
+while ! mysqladmin ping -h"\$MYSQL_HOST" -u"\$MYSQL_USER" -p"\$MYSQL_PASSWORD" --silent; do
+  echo "MySQL at \$MYSQL_HOST is not ready yet... waiting 5 seconds"
+  sleep 5
+done
+echo "MySQL is ready!"
+
+# Configure MySQL connection
 sed -i "s/^mysqlHost = .*/mysqlHost = \\"\$MYSQL_HOST\\"/g" config.lua
 sed -i "s/^mysqlUser = .*/mysqlUser = \\"\$MYSQL_USER\\"/g" config.lua
 sed -i "s/^mysqlPass = .*/mysqlPass = \\"\$MYSQL_PASSWORD\\"/g" config.lua
 sed -i "s/^mysqlDatabase = .*/mysqlDatabase = \\"\$MYSQL_DATABASE\\"/g" config.lua
-# sed -i "s/ip=\"127.0.0.1\"/ip=\"$LOCAL_IP\"/g" realotsloginserver-master/gameservers.xml
+
+# Start login server
+echo "Starting login server..."
 ./tfls
 EOT
 

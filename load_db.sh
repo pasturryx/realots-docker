@@ -1,10 +1,16 @@
+#!/bin/bash
 export MYSQL_USER=otserv
 export MYSQL_PASSWORD=otserv
 export MYSQL_DATABASE=otserv
+export MYSQL_HOST=mysql
 
-until docker-compose exec mysql mysql -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "USE $MYSQL_DATABASE"; do
-  echo "Waiting for MySQL database to be ready..."
-  sleep 2
+echo "Waiting for MySQL to be ready..."
+until docker-compose exec -T mysql mysqladmin ping -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" --silent; do
+  echo "MySQL is not ready yet... waiting 5 seconds"
+  sleep 5
 done
+echo "MySQL is ready!"
 
-cat sqls/realots-schema-inc-players.sql | docker-compose exec -T mysql sh -c 'mysql -u$MYSQL_USER -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE"'
+echo "Loading schema..."
+cat sqls/realots-schema-inc-players.sql | docker-compose exec -T mysql mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE"
+echo "Schema loaded successfully!"

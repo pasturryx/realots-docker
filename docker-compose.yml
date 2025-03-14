@@ -2,10 +2,15 @@ services:
   mysql:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: gamel
+      MYSQL_ROOT_PASSWORD: game
       MYSQL_DATABASE: otserv
       MYSQL_USER: otserv
       MYSQL_PASSWORD: otserv
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "otserv", "-potserv"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
   login:
     restart: always
     build:

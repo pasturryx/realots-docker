@@ -1,6 +1,5 @@
 FROM alpine:3.18
-
-RUN apk add --no-cache bash vim
+RUN apk add --no-cache bash vim mysql-client
 
 RUN mkdir /build
 

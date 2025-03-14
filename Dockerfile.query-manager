@@ -23,28 +23,39 @@ COPY --chmod=755 <<EOT /realotsquerymanager-master/entrypoint.sh
 #!/usr/bin/env bash
 set -e
 
+# Wait for MySQL to be available
+echo "Waiting for MySQL at \$MYSQL_HOST..."
+while ! mysqladmin ping -h"\$MYSQL_HOST" -u"\$MYSQL_USER" -p"\$MYSQL_PASSWORD" --silent; do
+  echo "MySQL at \$MYSQL_HOST is not ready yet... waiting 5 seconds"
+  sleep 5
+done
+echo "MySQL is ready!"
+
+# Configure MySQL connection
 cat <<EOF > config.lua
 -- SQL Settings
-mysqlHost = "\$MYSQL_HOST"
+mysqlHost = "\$MYSQL_HOST"  
 mysqlUser = "\$MYSQL_USER"
 mysqlPass = "\$MYSQL_PASSWORD"
 mysqlDatabase = "\$MYSQL_DATABASE"
 
 -- Connection Settings
-ip = "0.0.0.0" -- use 0.0.0.0 to bind all interfaces
+ip = "0.0.0.0"
 port = 17778
 
 -- Game Server Settings
-gameIp = "0.0.0.0" -- use 0.0.0.0 to bind all interfaces
+gameIp = "0.0.0.0"
 gamePort = 7172
 serverSaveHour = 5
-worldType = 0 -- normal pvp = 0, non-pvp = 1, pvp enforced = 2
+worldType = 0
 maxPlayers = 1500
 maxPlayersNewbies = 500
 premBuffer = 900
 reservedPremiumNewbies = 250
 EOF
+
+# Start query manager
+echo "Starting query manager..."
 ./bin/realotsquerymanager
 EOT
-
 CMD ["./entrypoint.sh"]
